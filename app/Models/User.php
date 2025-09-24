@@ -21,7 +21,29 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone'
     ];
+
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
+    }
+
+    public function budgets()
+    {
+        return $this->hasMany(Budget::class);
+    }
+
+    public function transactions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        //return $this->hasMany(Transaction::class);
+        return $this->belongsToMany(
+            Transaction::class,
+            'transaction_user',
+            'user_id',
+            'transaction_id')
+        ->withPivot('amount')->withTimestamps();
+    }
 
     /**
      * The attributes that should be hidden for serialization.
