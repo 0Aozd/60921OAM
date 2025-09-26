@@ -15,14 +15,14 @@
             <td>Сумма</td>
             <td>Описание</td>
         </tr>
-        @foreach($transaction->users as $user)
-            <tr>
-                <td>{{$user->name}}</td>
-                <td>{{$user->email }}</td>
-                <td>{{$user->pivot->amount}}</td>
-                <td>{{$transaction->description }}</td>
-            </tr>
-        @endforeach
+        <!--foreach($transaction->users as $user)-->
+        <tr>
+            <td>{{ $transaction->users->pluck('name')->implode(', ') }}<!--{$user->name}}--></td>
+            <td>{{ $transaction->users->pluck('email')->implode(', ') }}<!--{$user->email }}--></td>
+            <td>{{$transaction->users->sum('pivot.amount')}}</td>
+            <td>{{$transaction->description }}</td>
+        </tr>
+        <!--endforeach-->
     </table>
 @else
     <p>У пользователя нет транзакций.</p>
