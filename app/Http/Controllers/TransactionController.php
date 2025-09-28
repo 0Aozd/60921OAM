@@ -8,10 +8,11 @@ class TransactionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $perpage = $request->perpage ?? 2;
         return view('transactions', [
-            'transactions' => Transaction::all()
+            'transactions' => Transaction::paginate($perpage)->withQueryString()
         ]);
     }
 

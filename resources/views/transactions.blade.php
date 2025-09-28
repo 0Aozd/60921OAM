@@ -29,5 +29,8 @@
         </tr>
     @endforeach
     </table>
+    <div>
+        {{ $transactions->links() }}
+    </div>
 </body>
 </html>
