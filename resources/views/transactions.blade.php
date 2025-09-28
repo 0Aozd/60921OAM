@@ -11,14 +11,21 @@
             <td>id</td>
             <td>Описание</td>
             <td>Количество</td>
+            <td>Тип финансовой операции</td>
             <td>Категория</td>
+            <td>Действия</td>
         </thead>
     @foreach ($transactions as $transaction)
         <tr>
             <td>{{$transaction->transactions_id}}</td>
             <td>{{$transaction->description}}</td>
             <td>{{$transaction->amount}}</td>
+            <td>{{$transaction->type}}</td>
             <td>{{$transaction->category->name}}</td>
+
+            <td><a href="{{url('transaction/destroy/'.$transaction->transactions_id)}}">Удалить</a>
+                <a href="{{url('transaction/edit/'.$transaction->transactions_id)}}">Редактировать</a>
+            </td>
         </tr>
     @endforeach
     </table>
