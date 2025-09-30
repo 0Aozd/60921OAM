@@ -2,7 +2,10 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Transaction;
+
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+
 class TransactionController extends Controller
 {
     /**
@@ -31,6 +34,7 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             //'user_id'     => 'required|integer',
             'category_id' => 'required|integer',
@@ -76,6 +80,12 @@ class TransactionController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        if (! Gate::allows('edit-transaction', Transaction::all()
+            ->where('transactions_id', $id)->first())) {
+            return redirect('/error')->with('message',
+                "У вас нет разрешения на редактирование транзакции номер " . $id);
+        }
+
         $validated = $request->validate([
             //'user_id'     => 'required|integer',
             'category_id' => 'required|integer',
@@ -85,6 +95,7 @@ class TransactionController extends Controller
             'type'        => 'required|in:income,expense',
             'date' => 'nullable|date',
         ]);
+
         $transaction = Transaction::all()->where('transactions_id', $id)->first();
 
         $transaction->description = $validated['description'];
@@ -103,6 +114,12 @@ class TransactionController extends Controller
      */
     public function destroy(string $id)
     {
+        if (! Gate::allows('destroy-transaction', Transaction::all()
+            ->where('transactions_id', $id)->first())) {
+            return redirect('/error')->with('message',
+            "У вас нет разрешения на удаление транзакции номер " . $id);
+        }
+
         Transaction::destroy($id);
         return redirect('/transaction');
     }
