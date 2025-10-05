@@ -24,7 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::defaultView('pagination::default');
+        Paginator::useBootstrap();
+        //Paginator::defaultView('pagination::default');
 
         Gate::define('edit-transaction', function (User $user, Transaction $transaction) {
             return $user->is_admin OR $transaction->category_id != 3;

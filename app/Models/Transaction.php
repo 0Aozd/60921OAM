@@ -15,6 +15,9 @@ class Transaction extends Model
         'description',
         'date'
     ];
+    protected $casts = [
+        'date' => 'date',
+    ];
 
     public function users(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

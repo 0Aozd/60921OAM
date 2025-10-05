@@ -15,7 +15,8 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 
 //Route::get('/transactions/{id}', [TransactionController::class, 'show']);
 
-Route::get('/transaction', [TransactionController::class, 'index']);
+Route::get('/transaction', [TransactionController::class, 'index'])
+    ->middleware('auth');
 
 Route::get('/transaction/create', [TransactionController::class, 'create'])
     ->middleware('auth');
@@ -40,4 +41,8 @@ Route::post('/auth', [LoginController::class, 'authenticate']);
 
 Route::get('error', function () {
     return view('error', ['message' => session('message')]);
+});
+
+Route::get('/', function () {
+    return view('Main');
 });

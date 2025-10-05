@@ -4,6 +4,7 @@ use App\Models\Category;
 use App\Models\Transaction;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class TransactionController extends Controller
@@ -15,7 +16,7 @@ class TransactionController extends Controller
     {
         $perpage = $request->perpage ?? 2;
         return view('transactions', [
-            'transactions' => Transaction::paginate($perpage)->withQueryString()
+            'transactions' => Transaction::where('user_id', auth()->id())->orderBy('date', 'desc')->paginate($perpage)->withQueryString()
         ]);
     }
 
@@ -25,7 +26,7 @@ class TransactionController extends Controller
     public function create()
     {
         return view('transaction_create', [
-            'categories' => Category::all()
+            'categories' => Category::where('user_id', Auth::id())->get()
         ]);
     }
 
@@ -37,13 +38,30 @@ class TransactionController extends Controller
 
         $validated = $request->validate([
             //'user_id'     => 'required|integer',
-            'category_id' => 'required|integer',
+            'category_id' => 'required',
+            'new_category' => 'required_if:category_id,new|string|max:255',
+
             'description' => 'required|string|max:255',
             'currency_id' => 'nullable|integer',
             'amount'      => 'required|numeric',
             'type'        => 'required|in:income,expense',
             'date' => 'nullable|date',
         ]);
+
+        if ($validated['category_id'] === 'new') {
+            $category = Category::create([
+                'name'    => $validated['new_category'],
+                'user_id' => auth()->id(),
+                'type'    => $validated['type'], // тот же тип, что у транзакции
+            ]);
+            $validated['category_id'] = $category->category_id;
+        } else {
+            // проверка, что категория существует и принадлежит пользователю
+            $request->validate([
+                'category_id' => 'integer|exists:categories,category_id',
+            ]);
+        }
+
         $validated['user_id'] = auth()->id() ?? 1;
         $validated['currency_id'] = 1;
         $validated['date'] = now();
@@ -71,7 +89,7 @@ class TransactionController extends Controller
     {
         return view('transaction_edit', [
             'transaction' => Transaction::all()->where('transactions_id', $id)->first(),
-            'categories' => Category::all()
+            'categories' => Category::where('user_id', Auth::id())->get()
         ]);
     }
 
@@ -121,6 +139,8 @@ class TransactionController extends Controller
         }
 
         Transaction::destroy($id);
-        return redirect('/transaction');
+        return redirect('/transaction')->withErrors([
+            'deleted' => 'Вы успешно удалили транзакцию - '. $id
+        ]);;
     }
 }

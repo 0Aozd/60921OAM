@@ -43,13 +43,14 @@
             @endif
         </ul>
     </nav>
-    Элементов на странице:
-    <form method="get" action="{{url('transaction')}}">
+
+    <!--Элементов на странице:
+    <form method="get" action="{url('transaction')}}">
         <select name="perpage">
-            <option value="2" @if($paginator->perPage() == 2) selected @endif>2</option>
-            <option value="3" @if($paginator->perPage() == 3) selected @endif>3</option>
-            <option value="4" @if($paginator->perPage() == 4) selected @endif>4</option>
+            <option value="2" if($paginator->perPage() == 2) selected endif>2</option>
+            <option value="3" if($paginator->perPage() == 3) selected endif>3</option>
+            <option value="4" if($paginator->perPage() == 4) selected endif>4</option>
         </select>
         <input type="submit" value="Изменить">
-    </form>
+    </form>-->
 @endif
