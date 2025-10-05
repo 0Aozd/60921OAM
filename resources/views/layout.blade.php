@@ -12,12 +12,17 @@
 
     @include('login')
 
-    @include('error')
+    <div>
+        @include('error')
+    </div>
 
 
-    @section('content')
+    <main>
+        @yield('content')
+    </main>
 
-    @show
+    <!--section('content')
+    show-->
 
     <!--include('footer')-->
 

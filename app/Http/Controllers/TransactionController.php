@@ -33,13 +33,14 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
     public function store(Request $request)
     {
 
         $validated = $request->validate([
             //'user_id'     => 'required|integer',
             'category_id' => 'required',
-            'new_category' => 'required_if:category_id,new|string|max:255',
+            'new_category' => 'nullable|required_if:category_id,new|string|max:255',
 
             'description' => 'required|string|max:255',
             'currency_id' => 'nullable|integer',
@@ -56,15 +57,16 @@ class TransactionController extends Controller
             ]);
             $validated['category_id'] = $category->category_id;
         } else {
-            // проверка, что категория существует и принадлежит пользователю
-            $request->validate([
-                'category_id' => 'integer|exists:categories,category_id',
-            ]);
+            $category = Category::where('category_id', $validated['category_id'])
+                ->where('user_id', auth()->id())
+                ->first();
+
+            $validated['category_id'] = $category->category_id;
         }
 
         $validated['user_id'] = auth()->id() ?? 1;
         $validated['currency_id'] = 1;
-        $validated['date'] = now();
+        $validated['date'] =$validated['date'] ?? now();
 
         $transaction = new Transaction($validated);
         $transaction->save();

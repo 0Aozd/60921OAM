@@ -27,8 +27,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="category" class="form-label">Категория транзакции</label>
-                    <select class="form-select" id="category" name="category_id" aria-describedby="categoryHelp">
+                    <label for="category_id" class="form-label">Категория транзакции</label>
+                    <select class="form-select" id="category_id" name="category_id" aria-describedby="categoryHelp"  value="{{old('category_id')}}" >
                         <option style="display:none"></option>
                         @foreach($categories as $category)
                             <option value="{{$category->category_id}}"
@@ -56,15 +56,17 @@
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
-                        const select = document.getElementById('category');
+                        const select = document.getElementById('category_id');
                         const newCategoryBlock = document.getElementById('new-category-block');
 
-                        function toggleNewCategory() {
-                            newCategoryBlock.style.display = (select.value === 'new') ? 'block' : 'none';
-                        }
+                        if (select && newCategoryBlock) {
+                            function toggleNewCategory() {
+                                newCategoryBlock.style.display = (select.value === 'new') ? 'block' : 'none';
+                            }
 
-                        toggleNewCategory();
-                        select.addEventListener('change', toggleNewCategory);
+                            toggleNewCategory();
+                            select.addEventListener('change', toggleNewCategory);
+                        }
                     });
                 </script>
 
