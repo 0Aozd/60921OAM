@@ -17,12 +17,9 @@
     </div>
 
 
-    <main>
-        @yield('content')
-    </main>
+    @section('content')
 
-    <!--section('content')
-    show-->
+    @show
 
     <!--include('footer')-->
 

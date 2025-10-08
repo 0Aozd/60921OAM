@@ -34,7 +34,10 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-        return view('login', ['user' => Auth::user()]);
+        return view('Main', ['user' => Auth::user()])
+            ->withErrors([
+                'login' => 'Вы должны быть авторизованы'
+            ]);
     }
 
     public function logout(Request $request): RedirectResponse

@@ -23,7 +23,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" aria-disabled="true" href="#">Пользователи</a>
+                        <a class="nav-link disabled" aria-disabled="true" href="#">Регулярные платежи</a>
                     </li>
                 </ul>
 

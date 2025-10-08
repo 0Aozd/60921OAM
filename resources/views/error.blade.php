@@ -19,6 +19,11 @@
         {{$message}}
     </div>
     @enderror
+    @error('login')
+    <div class="alert alert-danger" role="alert">
+        {{$message}}
+    </div>
+    @enderror
     @error('deleted')
     <div class="alert alert-warning" role="alert">
         {{$message}}

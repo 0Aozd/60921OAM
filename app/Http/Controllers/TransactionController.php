@@ -15,8 +15,18 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $perpage = $request->perpage ?? 2;
+
+        // Базовый запрос
+        $query = Transaction::where('user_id', auth()->id());
+
+        // 🔹 Фильтр по категории, если выбран
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
         return view('transactions', [
-            'transactions' => Transaction::where('user_id', auth()->id())->orderBy('date', 'desc')->paginate($perpage)->withQueryString()
+            'transactions' => $query->orderBy('date', 'desc')->paginate($perpage)->withQueryString(),
+            'categories' => Category::where('user_id', auth()->id())->get(),
         ]);
     }
 

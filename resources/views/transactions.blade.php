@@ -1,8 +1,30 @@
 @extends('layout')
 
 @section('content')
+
     <div class="container mt-4">
         <h2>Список транзакций</h2>
+
+        <div>
+            <form method="get" action="{{ url('transaction') }}" class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="category_id" class="me-2">Фильтр по категориям:</label>
+                        <select name="category_id" class="form-select" onchange="this.form.submit()">
+                            <option value="">Все категории</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->category_id }}"
+                                    {{ request('category_id') == $category->category_id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <input type="hidden" name="perpage" value="{{ request('perpage') }}">
+            </form>
+        </div>
+
         <table class="table table-striped table-bordered">
             <thead class="table-dark">
             <tr>
@@ -39,6 +61,7 @@
 
         <div>
             <form method="get" action="{{ url('transaction') }}" class="mb-3 d-flex align-items-center">
+                <input type="hidden" name="category_id" value="{{ request('category_id') }}">
                 <label for="perpage" class="me-2">Элементов на странице:</label>
                 <select name="perpage" id="perpage" class="form-select me-2" style="width: auto;">
                     <option value="2" @if($transactions->perPage() == 2) selected @endif>2</option>
