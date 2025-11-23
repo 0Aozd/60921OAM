@@ -39,6 +39,11 @@ Route::get('/logout', [LoginController::class, 'logout']);
 
 Route::post('/auth', [LoginController::class, 'authenticate']);
 
+Route::get('/registration', [LoginController::class, 'show']);
+Route::post('/registration', [LoginController::class, 'store'])
+    ->name('registration');
+
+
 Route::get('error', function () {
     return view('error', ['message' => session('message')]);
 });

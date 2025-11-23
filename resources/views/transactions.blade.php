@@ -8,8 +8,8 @@
         <div>
             <form method="get" action="{{ url('transaction') }}" class="mb-3">
                 <div class="row">
-                    <div class="col-md-4">
-                        <label for="category_id" class="me-2">Фильтр по категориям:</label>
+                    <div class="col-md-3">
+                        <label for="category_id">Фильтр по категориям:</label>
                         <select name="category_id" class="form-select" onchange="this.form.submit()">
                             <option value="">Все категории</option>
                             @foreach($categories as $category)
@@ -20,6 +20,25 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="col-md-3">
+                        <label for="type">Тип операции:</label>
+                        <select name="type" class="form-select" onchange="this.form.submit()">
+                            <option value="">Все</option>
+                            <option value="income" {{ request('type') == 'income' ? 'selected' : '' }}>Доход</option>
+                            <option value="expense" {{ request('type') == 'expense' ? 'selected' : '' }}>Расход</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="sort_amount">Сортировать по количеству:</label>
+                        <select name="sort_amount" class="form-select" onchange="this.form.submit()">
+                            <option value="">Не сортировать</option>
+                            <option value="asc" {{ request('sort_amount') == 'asc' ? 'selected' : '' }}>По возрастанию</option>
+                            <option value="desc" {{ request('sort_amount') == 'desc' ? 'selected' : '' }}>По убыванию</option>
+                        </select>
+                    </div>
+
                 </div>
                 <input type="hidden" name="perpage" value="{{ request('perpage') }}">
             </form>

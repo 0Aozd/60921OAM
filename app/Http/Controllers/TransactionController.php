@@ -19,10 +19,23 @@ class TransactionController extends Controller
         // Базовый запрос
         $query = Transaction::where('user_id', auth()->id());
 
-        // 🔹 Фильтр по категории, если выбран
+        // Фильтр по категории, если выбран
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
+
+        // Фильтр по типу
+        if ($request->filled('type')) {
+            $query->where('type', $request->type);
+        }
+
+        // Сортировка по количеству
+        if ($request->filled('sort_amount')) {
+            $query->orderBy('amount', $request->sort_amount);
+        } else {
+            $query->orderBy('date', 'desc'); // стандартная сортировка по дате
+        }
+
 
         return view('transactions', [
             'transactions' => $query->orderBy('date', 'desc')->paginate($perpage)->withQueryString(),

@@ -9,6 +9,8 @@
                 <a href="{{ url('transaction') }}" class="btn btn-primary">Перейти к транзакциям</a>
             @else
                 <a href="/" class="btn btn-success">Войти в систему</a>
+                <br><br>
+                <a href="/registration" class="btn btn-success">Зарегистрироваться</a>
             @endif
         </div>
     </div>

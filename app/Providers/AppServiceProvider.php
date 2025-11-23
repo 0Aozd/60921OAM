@@ -25,7 +25,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrap();
-        //Paginator::defaultView('pagination::default');
 
         Gate::define('edit-transaction', function (User $user, Transaction $transaction) {
             return $user->is_admin OR $transaction->category_id != 3;
@@ -33,6 +32,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('destroy-transaction', function (User $user, Transaction $transaction) {
            return $user->is_admin OR $transaction->amount < 10000;
+        });
+
+        Gate::define('create-category', function (User $user) {
+           return true;
         });
     }
 }

@@ -11,6 +11,7 @@ class Category extends Model
         'user_id',
         'name',
         'type',
+        'picture_url',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
